@@ -7,7 +7,9 @@ must have a Bash twin built to this exact spec, so behavior and presentation
 match 1:1 across platforms.
 
 Reverse-engineered from
-`Mac-Equivalent-Scripts/macOS_Add_numberring_based_on_creation_date_ascending.sh`.
+`Mac-Equivalent-Scripts/macOS_Add_Numberring_Based_On_Creation_Date_Ascending.sh`
+and its Windows twin
+`Win_Add_Numberring_Based_On_Creation_Date_Ascending.bat`.
 
 ---
 
@@ -15,16 +17,20 @@ Reverse-engineered from
 
 **Pattern:** `macOS_Title_Case_With_Underscores.sh`
 
-- Same Title_Case_With_Underscores base name as the Windows `.bat` twin,
-  prefixed with `macOS_`.
+- Every macOS script filename **must start with the `macOS_` prefix**,
+  mirroring the `Win_` prefix used on the Windows side. This makes the
+  platform obvious at a glance in file listings, search results, and
+  release archives.
+- Same Title_Case_With_Underscores **base name** as the Windows `.bat`
+  twin (the part after its `Win_` prefix), just re-prefixed with `macOS_`.
 - Every word starts with a **capital letter**; spaces become underscores.
 - Extension is always lowercase `.sh`.
 - Lives inside the `Mac-Equivalent-Scripts/` subfolder — **never** in the
   repo root. The root is reserved for Windows `.bat` scripts only.
 
 ```
-Windows script (root)                 : Rename_Files_By_Creation_Date.bat
-macOS equivalent (Mac-Equivalent-Scripts/) : macOS_Rename_Files_By_Creation_Date.sh
+Windows script (root)                       : Win_Rename_Files_By_Creation_Date.bat
+macOS equivalent (Mac-Equivalent-Scripts/)  : macOS_Rename_Files_By_Creation_Date.sh
 ```
 
 ---
@@ -401,8 +407,9 @@ echo
 
 Before committing a new `.sh` script, confirm:
 
-- [ ] Filename is `macOS_Title_Case_With_Underscores.sh` inside
-      `Mac-Equivalent-Scripts/`, matching the Windows twin's base name.
+- [ ] Filename is `macOS_Title_Case_With_Underscores.sh` (starts with the
+      `macOS_` prefix) inside `Mac-Equivalent-Scripts/`, matching the
+      Windows twin's base name (the part after its `Win_` prefix).
 - [ ] Header comment and console banner reference `Biraj` / `Biraj2004`
       branding exactly as shown, identical wording to the Windows twin.
 - [ ] Script `cd`s into its own directory via `${BASH_SOURCE[0]}` before

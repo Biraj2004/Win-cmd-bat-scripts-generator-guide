@@ -2,32 +2,44 @@
 
 This document defines the **mandatory** structure, branding, presentation, and
 safety conventions for every Windows `.bat` script added to this repository.
-It is reverse-engineered from `Add_numberring_based_on_creation_date_ascending.bat`
+It is reverse-engineered from `Win_Add_Numberring_Based_On_Creation_Date_Ascending.bat`
 and must be followed **exactly** so all scripts feel like one consistent family.
 
 ---
 
 ## 1. File Naming Convention
 
-**Pattern:** `Title_Case_With_Underscores.bat`
+**Pattern:** `Win_Title_Case_With_Underscores.bat`
 
-- Every word starts with a **capital letter**.
+- Every Windows script filename **must start with the `Win_` prefix**,
+  mirroring the `macOS_` prefix used on the Mac side. This makes the
+  platform obvious at a glance in file listings, search results, and
+  release archives.
+- After the `Win_` prefix, every word starts with a **capital letter**.
 - Spaces between words are replaced with a single underscore `_`.
 - No spaces, no hyphens, no camelCase, no ALL_CAPS words.
 - File extension is always lowercase `.bat`.
 - Lives in the **root** of the repository (never in a subfolder).
 
 ```
-Correct   : Rename_Files_By_Creation_Date.bat
-Correct   : Compress_Images_To_Webp.bat
-Incorrect : rename_files_by_creation_date.bat   (no capitals)
-Incorrect : RenameFilesByCreationDate.bat       (camelCase, no underscores)
-Incorrect : Rename-Files-By-Creation-Date.bat   (hyphens instead of underscores)
+Correct   : Win_Rename_Files_By_Creation_Date.bat
+Correct   : Win_Compress_Images_To_Webp.bat
+Incorrect : Rename_Files_By_Creation_Date.bat   (missing Win_ prefix)
+Incorrect : win_rename_files_by_creation_date.bat   (no capitals, lowercase prefix)
+Incorrect : WinRenameFilesByCreationDate.bat        (camelCase, no underscores)
+Incorrect : Win-Rename-Files-By-Creation-Date.bat   (hyphens instead of underscores)
 ```
 
-The Mac equivalent of this file must reuse the **exact same base name**
-(see `MACOS_SCRIPT_STYLE_GUIDE.md`), just prefixed with `macOS_` and placed
-in `Mac-Equivalent-Scripts/`.
+The **base name** is everything after the `Win_` prefix
+(e.g. `Rename_Files_By_Creation_Date`). The Mac equivalent of this file
+must reuse the **exact same base name** (see `MACOS_SCRIPT_STYLE_GUIDE.md`),
+just prefixed with `macOS_` instead of `Win_`, and placed in
+`Mac-Equivalent-Scripts/`.
+
+```
+Windows : Win_Rename_Files_By_Creation_Date.bat
+macOS   : macOS_Rename_Files_By_Creation_Date.sh
+```
 
 ---
 
@@ -376,7 +388,8 @@ endlocal
 
 Before committing a new `.bat` script, confirm:
 
-- [ ] Filename is `Title_Case_With_Underscores.bat` in the repo root.
+- [ ] Filename is `Win_Title_Case_With_Underscores.bat` (starts with the
+      `Win_` prefix) in the repo root.
 - [ ] `title`, header comment, and console banner all reference
       `Biraj` / `Biraj2004` branding exactly as shown.
 - [ ] `[INFO]` block accurately lists every parameter that affects behavior.
