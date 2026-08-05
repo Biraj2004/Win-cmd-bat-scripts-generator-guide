@@ -41,6 +41,14 @@ Windows : Win_Rename_Files_By_Creation_Date.bat
 macOS   : macOS_Rename_Files_By_Creation_Date.sh
 ```
 
+### Current Repository Script Pairs
+
+| Windows Script (`/`) | macOS Twin (`Mac-Equivalent-Scripts/`) | Purpose |
+| :--- | :--- | :--- |
+| `Win_Add_Numberring_Based_On_Creation_Date_Ascending.bat` | `macOS_Add_Numberring_Based_On_Creation_Date_Ascending.sh` | Independent Video & PDF auto-numbering by creation date |
+| `Win_Remove_Hamaracollege_Text_From_Udemy_Videos.bat` | `macOS_Remove_Hamaracollege_Text_From_Udemy_Videos.sh` | Case-insensitive watermark tag removal |
+| `Win_Strip_Mismatched_Numbered_Prefix.bat` | `macOS_Strip_Mismatched_Numbered_Prefix.sh` | Pure numeric prefix stripping before first hyphen |
+
 ---
 
 ## 2. Overall File Skeleton
