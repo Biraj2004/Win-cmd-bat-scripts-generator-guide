@@ -121,21 +121,27 @@ process_category() {
 
     local timestamped=()
     for f in "${files[@]}"; do
-        local bt
+        local bt mt min_t
         bt=$(stat -f "%B" "$f" 2>/dev/null)
-        if ! [[ "$bt" =~ ^[0-9]+$ ]]; then
+        if ! [[ "$bt" =~ ^[0-9]+$ ]] || [ "$bt" -eq 0 ]; then
             bt=$(stat -c "%W" "$f" 2>/dev/null)
         fi
-        if ! [[ "$bt" =~ ^[0-9]+$ ]]; then
-            bt=$(stat -f "%m" "$f" 2>/dev/null)
+
+        mt=$(stat -f "%m" "$f" 2>/dev/null)
+        if ! [[ "$mt" =~ ^[0-9]+$ ]] || [ "$mt" -eq 0 ]; then
+            mt=$(stat -c "%Y" "$f" 2>/dev/null)
         fi
-        if ! [[ "$bt" =~ ^[0-9]+$ ]]; then
-            bt=$(stat -c "%Y" "$f" 2>/dev/null)
+
+        min_t=0
+        if [[ "$bt" =~ ^[0-9]+$ ]] && [ "$bt" -gt 0 ]; then
+            min_t=$bt
         fi
-        if ! [[ "$bt" =~ ^[0-9]+$ ]]; then
-            bt=0
+        if [[ "$mt" =~ ^[0-9]+$ ]] && [ "$mt" -gt 0 ]; then
+            if [ "$min_t" -eq 0 ] || [ "$mt" -lt "$min_t" ]; then
+                min_t=$mt
+            fi
         fi
-        timestamped+=("$bt"$'\t'"$f")
+        timestamped+=("$min_t"$'\t'"$f")
     done
 
     local sorted_ts
