@@ -23,10 +23,10 @@ The repository test suite consists of 6 test cases covering all script pairs:
 
 | Test Case | Script Tested | Verification Objective |
 | :--- | :--- | :--- |
-| **Test 1** | `Win_Add_Numberring_Based_On_Creation_Date_Ascending.bat` | Independent Video (`01..03`) and PDF (`01..02`) numbering per folder |
+| **Test 1** | `Win_Add_Prefix_Numberring_Based_On_Creation_Date_Ascending.bat` | Independent Video (`01..03`) and PDF (`01..02`) numbering per folder |
 | **Test 2** | `Win_Remove_Hamaracollege_Text_From_Udemy_Videos.bat` | Case-insensitive watermark tag removal (`@hamaracollege` / `@Hamaracollege`) |
 | **Test 3** | `Win_Strip_Mismatched_Numbered_Prefix.bat` | Numeric prefix stripping (`07-`, `12 -`) while preserving non-numeric prefixes |
-| **Test 4** | `macOS_Add_Numberring_Based_On_Creation_Date_Ascending.sh` | Independent Video & PDF numbering under Bash |
+| **Test 4** | `macOS_Add_Prefix_Numberring_Based_On_Creation_Date_Ascending.sh` | Independent Video & PDF numbering under Bash |
 | **Test 5** | `macOS_Remove_Hamaracollege_Text_From_Udemy_Videos.sh` | Watermark tag removal under Bash |
 | **Test 6** | `macOS_Strip_Mismatched_Numbered_Prefix.sh` | Numeric prefix stripping under Bash |
 

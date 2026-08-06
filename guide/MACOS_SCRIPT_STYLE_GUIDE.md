@@ -37,7 +37,7 @@ macOS equivalent (Mac-Equivalent-Scripts/)  : macOS_Rename_Files_By_Creation_Dat
 
 | macOS Twin (`Mac-Equivalent-Scripts/`) | Windows Script (`/`) | Purpose |
 | :--- | :--- | :--- |
-| `macOS_Add_Numberring_Based_On_Creation_Date_Ascending.sh` | `Win_Add_Numberring_Based_On_Creation_Date_Ascending.bat` | Independent Video & PDF auto-numbering by creation date |
+| `macOS_Add_Prefix_Numberring_Based_On_Creation_Date_Ascending.sh` | `Win_Add_Prefix_Numberring_Based_On_Creation_Date_Ascending.bat` | Independent Video & PDF auto-numbering by creation date |
 | `macOS_Remove_Hamaracollege_Text_From_Udemy_Videos.sh` | `Win_Remove_Hamaracollege_Text_From_Udemy_Videos.bat` | Case-insensitive watermark tag removal |
 | `macOS_Strip_Mismatched_Numbered_Prefix.sh` | `Win_Strip_Mismatched_Numbered_Prefix.bat` | Pure numeric prefix stripping before first hyphen |
 
@@ -133,13 +133,13 @@ echo
 ## 6. `[INFO]` Block
 
 ```bash
-echo "[INFO] Working Folder   : $ROOT_DIR"
-echo "[INFO] Target Extensions: <ext1>, <ext2>, ..."
-echo "[INFO] Sorting Rule     : <rule>, Ascending/Descending"
-echo "[INFO] Numbering Format : <format rules, if applicable>"
-echo "[INFO] Scope            : Current folder + ALL subfolders (Recursive)"
-echo "[INFO] Numbering Rule   : <per-folder / global numbering rule, if applicable>"
-echo "[INFO] Safety           : <what is protected / never modified>"
+echo "[INFO] Working Folder    : $ROOT_DIR"
+echo "[INFO] Target Extensions : <ext1>, <ext2>, ..."
+echo "[INFO] Sorting Rule      : <rule>, Ascending/Descending"
+echo "[INFO] Numbering Format  : <format rules, if applicable>"
+echo "[INFO] Scope             : Current folder + ALL subfolders (Recursive)"
+echo "[INFO] Numbering Rule    : <per-folder / global numbering rule, if applicable>"
+echo "[INFO] Safety            : <what is protected / never modified>"
 echo
 ```
 

@@ -45,7 +45,7 @@ macOS   : macOS_Rename_Files_By_Creation_Date.sh
 
 | Windows Script (`/`) | macOS Twin (`Mac-Equivalent-Scripts/`) | Purpose |
 | :--- | :--- | :--- |
-| `Win_Add_Numberring_Based_On_Creation_Date_Ascending.bat` | `macOS_Add_Numberring_Based_On_Creation_Date_Ascending.sh` | Independent Video & PDF auto-numbering by creation date |
+| `Win_Add_Prefix_Numberring_Based_On_Creation_Date_Ascending.bat` | `macOS_Add_Prefix_Numberring_Based_On_Creation_Date_Ascending.sh` | Independent Video & PDF auto-numbering by creation date |
 | `Win_Remove_Hamaracollege_Text_From_Udemy_Videos.bat` | `macOS_Remove_Hamaracollege_Text_From_Udemy_Videos.sh` | Case-insensitive watermark tag removal |
 | `Win_Strip_Mismatched_Numbered_Prefix.bat` | `macOS_Strip_Mismatched_Numbered_Prefix.sh` | Pure numeric prefix stripping before first hyphen |
 
@@ -143,12 +143,12 @@ A flat list of `[INFO]` lines summarizing exactly what the script will do,
 using aligned labels (pad label column so `:` lines up):
 
 ```bat
-echo [INFO] Working Folder   : %CD%
-echo [INFO] Target Extensions: <ext1>, <ext2>, ...
-echo [INFO] Sorting Rule     : <rule>, Ascending/Descending
-echo [INFO] Numbering Format : <format rules, if applicable>
-echo [INFO] Scope            : Current folder + ALL subfolders (Recursive)
-echo [INFO] Safety           : <what is protected / never modified>
+echo [INFO] Working Folder    : %CD%
+echo [INFO] Target Extensions : <ext1>, <ext2>, ...
+echo [INFO] Sorting Rule      : <rule>, Ascending/Descending
+echo [INFO] Numbering Format  : <format rules, if applicable>
+echo [INFO] Scope             : Current folder + ALL subfolders (Recursive)
+echo [INFO] Safety            : <what is protected / never modified>
 echo.
 ```
 
