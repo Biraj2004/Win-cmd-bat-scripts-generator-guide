@@ -286,6 +286,21 @@ echo "--------------------------------------------------------------------------
   the actual verb, e.g. `GRAND_MOVED`, `GRAND_CONVERTED`), initialized to
   `0` before the loop and incremented with `$((VAR+1))`.
 
+### 9.3 Terminal Color Standards
+
+Use ANSI escape colors consistently and tastefully to maintain maximum legibility without visual clutter:
+
+| Purpose | ANSI Code | Visual Appearance |
+| :--- | :--- | :--- |
+| **Script Header Title & Banners** | `\033[0;36m` | Cyan |
+| **Body Text, Info Labels & File Paths** | `\033[1;37m` | White |
+| **`[INFO]` Status & `[SUCCESS]` Completion** | `\033[0;32m` | Green |
+| **Warnings, Safety Prompts & Update Alerts** | `\033[1;33m` | Yellow |
+| **Folder/Group Headers** | `\033[0;35m` | Magenta |
+| **Skipped Items (`[SKIP]`)** | `\033[0;90m` | Gray / DarkGray |
+| **Errors & Failures (`[ERROR]`)** | `\033[0;31m` | Red |
+| **Section Dividers (`===`, `---`)** | `\033[0;90m` | Gray |
+
 ---
 
 ## 10. No Color Codes in Bash Output

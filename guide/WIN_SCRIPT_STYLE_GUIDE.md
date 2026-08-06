@@ -237,19 +237,18 @@ Inside the encoded PowerShell payload:
 - `$ErrorActionPreference = 'Stop'` at the top.
 - Use `Write-Host` (not `Write-Output`) for all user-facing log lines so
   color control (`-ForegroundColor`) is available.
-- **Color palette** (use consistently, do not invent new colors per script):
+- **Color palette** (use consistently and tastefully to maintain clean legibility without overwhelming visual noise):
 
   | Purpose                                             | Color         |
   |------------------------------------------------------|---------------|
-  | General `[INFO]` / neutral status                    | `Gray`        |
-  | Nothing found / soft warning                          | `Yellow`      |
+  | Script Header Title & Main Banners                   | `Cyan`        |
+  | Body Text, Log Details, Info Labels & File Paths     | `White`       |
+  | `[INFO]` Status & `[SUCCESS]` Completion Lines       | `Green`       |
+  | Warnings, Safety Prompts & Update Alerts             | `Yellow`      |
   | Folder/group header (e.g. `[FOLDER]`)                 | `Magenta`     |
-  | Sub-detail under a folder header                      | `DarkMagenta` |
   | Skipped item (already correct, no-op)                 | `DarkGray`    |
-  | Successful individual action detail (e.g. `-->` line) | `Cyan`        |
-  | Error for a single item                               | `Red`         |
-  | `[SUMMARY]` totals block + final `[SUCCESS]` line      | `Green`       |
-  | Section separators / labels with no special meaning   | *(default, no color override)* |
+  | Errors & Failures (`[ERROR]`)                        | `Red`         |
+  | Section Separators & Dividers                        | `Gray`        |
 
 - **Log tag vocabulary** — use these exact bracketed tags, do not invent
   synonyms:

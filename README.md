@@ -33,9 +33,13 @@ Every script in the repository is built as part of a 1:1 platform twin pair. Win
    - Declining prompt exits cleanly without touching any files (`exit 0`).
 3. **PowerShell Base64 Payload Engine (Windows)**:
    - Heavy batch operations pass execution to Base64 UTF-16LE Encoded PowerShell commands (`-EncodedCommand`), avoiding quote/escaping issues and supporting Unicode filenames natively.
-4. **Strict Color Palette & Tag Vocabulary**:
-   - `[INFO]`, `[FOLDER]`, `[SKIP]`, `[RENAMED]`, `[ERROR]`, `[SUMMARY]`, `[SUCCESS]`.
-   - Clear visual hierarchy with ANSI colors (PowerShell) and formatted log tags (Bash).
+4. **Tasteful Minimal Color Hierarchy & Tag Vocabulary**:
+   - Banners & Main Section Titles: **Cyan/Blue**
+   - Body Text, Info Labels & File Paths: Clean **White** for maximum legibility and zero visual noise
+   - Status & Completion: **Green** (`[INFO]`, `[SUCCESS]`)
+   - Warnings & Safety Gates: **Yellow** (`WARNING:`, `UPDATE AVAILABLE`)
+   - Section Dividers: **Gray** (`===`, `---`)
+   - Standard log tag vocabulary: `[INFO]`, `[FOLDER]`, `[SKIP]`, `[RENAMED]`, `[ERROR]`, `[SUMMARY]`, `[SUCCESS]`
 5. **Idempotency Guarantee**:
    - Re-running any script is 100% safe. Files that already meet target criteria are logged as `[SKIP]` without double-prefixing or failing.
 
