@@ -3,6 +3,7 @@
 # GitHub      : https://github.com/Biraj2004
 # Developer   : Biraj
 # Description : Checks FFmpeg installation, version status, and PATH configuration.
+#                - Prepend PATH precedence so updated binaries take priority over older legacy builds.
 #                - Minimal, tasteful color palette: Cyan header titles, White clean body text,
 #                  Green status alerts, Yellow warning gates, Gray dividers.
 # =======================================================================================================
@@ -131,7 +132,7 @@ else
     printf "${WHITE}[INFO] Latest Version        : %s${NC}\n" "$LATEST_VER"
     printf "${YELLOW}[INFO] Environment PATH      : NOT CONFIGURED${NC}\n"
     echo
-    read -r -p "FFmpeg Full Build will be installed. Type Y to INSTALL, or N to cancel : " CONFIRM_INSTALL
+    read -r -p "FFmpeg Full Build will be installed. Type Y and press Enter to INSTALL, or N to cancel : " CONFIRM_INSTALL
     CONFIRM_INSTALL=$(echo "$CONFIRM_INSTALL" | tr -d '\r')
     case "$CONFIRM_INSTALL" in
         [Yy]|[Yy][Ee][Ss])
@@ -153,13 +154,13 @@ if [ -n "$BREW_CMD" ]; then
     brew install ffmpeg 2>/dev/null || brew upgrade ffmpeg
     PATH_ACTION="ALREADY SET via Homebrew"
 else
-    printf "${WHITE}[PROCESSING] Downloading static FFmpeg Full Build binaries ...${NC}\n"
+    printf "${WHITE}[PROCESSING] Downloading static FFmpeg Full Build binaries with progress bar ...${NC}\n"
     INSTALL_DIR="$HOME/.local/bin"
     mkdir -p "$INSTALL_DIR"
     
     for TOOL in ffmpeg ffprobe ffplay; do
         TEMP_ZIP="/tmp/${TOOL}_macos.zip"
-        curl -sL "https://evermeet.cx/ffmpeg/getrelease/${TOOL}/zip" -o "$TEMP_ZIP" 2>/dev/null
+        curl -# -L "https://evermeet.cx/ffmpeg/getrelease/${TOOL}/zip" -o "$TEMP_ZIP" 2>/dev/null
         if [ -s "$TEMP_ZIP" ]; then
             unzip -o "$TEMP_ZIP" -d "$INSTALL_DIR" 2>/dev/null
             rm -f "$TEMP_ZIP"
@@ -167,6 +168,7 @@ else
         fi
     done
 
+    # Prepend to PATH in shell profile if not present
     for PROFILE in "$HOME/.zshrc" "$HOME/.bash_profile" "$HOME/.profile"; do
         if [ -f "$PROFILE" ]; then
             if ! grep -q "$INSTALL_DIR" "$PROFILE"; then
@@ -175,20 +177,22 @@ else
         fi
     done
     export PATH="$INSTALL_DIR:$PATH"
-    PATH_ACTION="UPDATED & CONFIGURED PERMANENTLY in shell profile ($INSTALL_DIR)"
+    PATH_ACTION="PREPENDED & CONFIGURED PERMANENTLY in shell profile ($INSTALL_DIR)"
 fi
 
 FINAL_FF=$(command -v ffmpeg 2>/dev/null)
 FINAL_FP=$(command -v ffprobe 2>/dev/null)
 FINAL_FY=$(command -v ffplay 2>/dev/null)
 
+NEW_VER=$(ffmpeg -version 2>/dev/null | head -n 1)
+
 echo
 echo -e "${GREEN}=======================================================================================================${NC}"
-printf "${GREEN}[SUCCESS] FFmpeg Full Build installation / update & PATH configuration complete!${NC}\n"
-printf "${GREEN} [Environment PATH] : %s${NC}\n" "$PATH_ACTION"
-if [ -n "$FINAL_FF" ]; then printf "${WHITE} [ffmpeg]           : %s${NC}\n" "$FINAL_FF"; fi
-if [ -n "$FINAL_FP" ]; then printf "${WHITE} [ffprobe]          : %s${NC}\n" "$FINAL_FP"; fi
-if [ -n "$FINAL_FY" ]; then printf "${WHITE} [ffplay]           : %s${NC}\n" "$FINAL_FY"; fi
+printf "${GREEN}[SUCCESS] FFmpeg Full Build update complete! Active Version: %s${NC}\n" "$NEW_VER"
+printf "${GREEN} [Shell PATH Precedence] : %s${NC}\n" "$PATH_ACTION"
+if [ -n "$FINAL_FF" ]; then printf "${WHITE} [ffmpeg]                : %s${NC}\n" "$FINAL_FF"; fi
+if [ -n "$FINAL_FP" ]; then printf "${WHITE} [ffprobe]               : %s${NC}\n" "$FINAL_FP"; fi
+if [ -n "$FINAL_FY" ]; then printf "${WHITE} [ffplay]                : %s${NC}\n" "$FINAL_FY"; fi
 echo -e "${GREEN}=======================================================================================================${NC}"
 echo "[FINISHED] Script execution finished. GitHub: https://github.com/Biraj2004"
 echo "======================================================================================================="
