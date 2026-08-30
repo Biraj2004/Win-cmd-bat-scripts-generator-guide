@@ -48,6 +48,9 @@ macOS   : macOS_Rename_Files_By_Creation_Date.sh
 | `Win_Add_Prefix_Numberring_Based_On_Creation_Date_Ascending.bat` | `macOS_Add_Prefix_Numberring_Based_On_Creation_Date_Ascending.sh` | Independent Video & PDF auto-numbering by creation date |
 | `Win_Remove_Hamaracollege_Text_From_Udemy_Videos.bat` | `macOS_Remove_Hamaracollege_Text_From_Udemy_Videos.sh` | Case-insensitive watermark tag removal |
 | `Win_Strip_Mismatched_Numbered_Prefix.bat` | `macOS_Strip_Mismatched_Numbered_Prefix.sh` | Pure numeric prefix stripping before first hyphen |
+| `Win_Fix_Double_Extensions_And_Convert_Webm_To_Mp4.bat` | `macOS_Fix_Double_Extensions_And_Convert_Webm_To_Mp4.sh` | Strips double video extensions and converts WebM to MP4 |
+| `Win_Install_FFmpeg_And_Set_Env_Path.bat` | `macOS_Install_FFmpeg_And_Set_Env_Path.sh` | FFmpeg auto-installer and environment PATH configuration |
+| `Win_Setup_Stremio_To_Play_In_MPV.bat` | `macOS_Setup_Stremio_To_Play_In_MPV.sh` | Configures Stremio to add MPV player integration ("Play in MPV") |
 
 ---
 

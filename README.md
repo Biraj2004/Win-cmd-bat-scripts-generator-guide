@@ -20,6 +20,7 @@ Every script in the repository is built as part of a 1:1 platform twin pair. Win
 | **Strip Numeric Prefix** | [`Win_Strip_Mismatched_Numbered_Prefix.bat`](./Win_Strip_Mismatched_Numbered_Prefix.bat) | [`macOS_Strip_Mismatched_Numbered_Prefix.sh`](./Mac-Equivalent-Scripts/macOS_Strip_Mismatched_Numbered_Prefix.sh) | Detects leading pure-numeric prefixes (`07-`, `12 -`) before the first hyphen on media files and removes them safely. |
 | **Fix Double Extensions & Convert WebM** | [`Win_Fix_Double_Extensions_And_Convert_Webm_To_Mp4.bat`](./Win_Fix_Double_Extensions_And_Convert_Webm_To_Mp4.bat) | [`macOS_Fix_Double_Extensions_And_Convert_Webm_To_Mp4.sh`](./Mac-Equivalent-Scripts/macOS_Fix_Double_Extensions_And_Convert_Webm_To_Mp4.sh) | Strips double video extensions (`.mp4.mkv`, `.mp4.webm` -> `.mp4`) and converts standalone `.webm` files to `.mp4` preserving timestamps and metadata. |
 | **FFmpeg Auto-Installer & PATH Setup** | [`Win_Install_FFmpeg_And_Set_Env_Path.bat`](./Win_Install_FFmpeg_And_Set_Env_Path.bat) | [`macOS_Install_FFmpeg_And_Set_Env_Path.sh`](./Mac-Equivalent-Scripts/macOS_Install_FFmpeg_And_Set_Env_Path.sh) | Checks if FFmpeg is installed; if present, displays full executable path and version. If missing, downloads FFmpeg full build and sets environment PATH variable. |
+| **Stremio MPV Player Integration** | [`Win_Setup_Stremio_To_Play_In_MPV.bat`](./Win_Setup_Stremio_To_Play_In_MPV.bat) | [`macOS_Setup_Stremio_To_Play_In_MPV.sh`](./Mac-Equivalent-Scripts/macOS_Setup_Stremio_To_Play_In_MPV.sh) | Configures Stremio to add MPV player integration ("Play in MPV"), patches server.js with quoted paths and sanitized start times, with automatic backup. |
 
 ---
 
@@ -72,12 +73,14 @@ chmod +x macOS_Add_Prefix_Numberring_Based_On_Creation_Date_Ascending.sh
 ├── Win_Fix_Double_Extensions_And_Convert_Webm_To_Mp4.bat
 ├── Win_Install_FFmpeg_And_Set_Env_Path.bat
 ├── Win_Remove_Hamaracollege_Text_From_Udemy_Videos.bat
+├── Win_Setup_Stremio_To_Play_In_MPV.bat
 ├── Win_Strip_Mismatched_Numbered_Prefix.bat
 ├── Mac-Equivalent-Scripts/
 │   ├── macOS_Add_Prefix_Numberring_Based_On_Creation_Date_Ascending.sh
 │   ├── macOS_Fix_Double_Extensions_And_Convert_Webm_To_Mp4.sh
 │   ├── macOS_Install_FFmpeg_And_Set_Env_Path.sh
 │   ├── macOS_Remove_Hamaracollege_Text_From_Udemy_Videos.sh
+│   ├── macOS_Setup_Stremio_To_Play_In_MPV.sh
 │   └── macOS_Strip_Mismatched_Numbered_Prefix.sh
 ├── guide/
 │   ├── WIN_SCRIPT_STYLE_GUIDE.md
