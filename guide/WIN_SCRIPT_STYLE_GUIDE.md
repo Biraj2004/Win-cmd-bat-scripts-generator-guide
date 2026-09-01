@@ -51,6 +51,7 @@ macOS   : macOS_Rename_Files_By_Creation_Date.sh
 | `Win_Fix_Double_Extensions_And_Convert_Webm_To_Mp4.bat` | `macOS_Fix_Double_Extensions_And_Convert_Webm_To_Mp4.sh` | Strips double video extensions and converts WebM to MP4 |
 | `Win_Install_FFmpeg_And_Set_Env_Path.bat` | `macOS_Install_FFmpeg_And_Set_Env_Path.sh` | FFmpeg auto-installer and environment PATH configuration |
 | `Win_Setup_Stremio_To_Play_In_MPV.bat` | `macOS_Setup_Stremio_To_Play_In_MPV.sh` | Configures Stremio to add MPV player integration ("Play in MPV") |
+| `Win_Clean_Explorer_Context_Menu_Entries.bat` | *N/A (Windows Registry Specific)* | Scans context menu registry locations (`Directory`, `Background`, `Folder`, `*` in `HKLM`/`HKCU`), detects missing executables / uninstalled app leftovers, creates `.reg` backups, and supports selective or bulk removal. |
 
 ---
 
@@ -224,12 +225,26 @@ if errorlevel 1 (
 powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -EncodedCommand "<Base64-encoded UTF-16LE PowerShell script>"
 ```
 
-- Heavy logic (recursion, sorting, renaming, error handling) lives in
+- Heavy logic (recursion, sorting, renaming, error handling, registry queries) lives in
   **PowerShell**, not raw batch, for reliability with special characters,
   Unicode filenames, and structured objects.
-- The PowerShell payload is passed via `-EncodedCommand` using a
-  **Base64-encoded UTF-16LE** string (this is what `-EncodedCommand` requires).
-  This avoids all batch quoting/escaping issues for complex scripts.
+- **Supported Engine Patterns**:
+  1. **Base64 Payload Pattern (`-EncodedCommand`)**: For compact-to-medium scripts, the PowerShell payload is passed via `-EncodedCommand` using a Base64-encoded UTF-16LE string to eliminate quote-escaping issues.
+  2. **Hybrid Batch/PowerShell Scriptblock Pattern (`<# : ... #>`)**: For large scripts (>8KB Windows CMD command-line buffer limit) or complex interactive UI workflows (such as `Win_Clean_Explorer_Context_Menu_Entries.bat`), use the hybrid wrapper:
+     ```bat
+     <# :
+     @echo off
+     setlocal EnableDelayedExpansion
+     title <Purpose> - by Biraj2004
+     cd /d "%~dp0"
+     where powershell >nul 2>&1 || (echo [ERROR] PowerShell missing & pause & exit /b 1)
+     powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create([System.IO.File]::ReadAllText('%~f0')))"
+     pause
+     endlocal
+     exit /b
+     #>
+     # Pure PowerShell code continues here...
+     ```
 - Always check `where powershell` exists first and fail gracefully with
   `[ERROR]` + `pause` + `exit /b 1` if missing.
 

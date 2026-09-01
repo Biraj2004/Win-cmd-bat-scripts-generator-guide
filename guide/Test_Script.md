@@ -241,3 +241,25 @@ Or execute:
 ```bash
 python -c "import test_all_scripts"
 ```
+
+---
+
+## 5. Registry Context Menu Cleaner Testing (`Win_Clean_Explorer_Context_Menu_Entries.bat`)
+
+For registry-based scripts that alter Windows Shell handlers, the testing methodology uses an **isolated test key sandbox**:
+
+```powershell
+# 1. Create temporary dummy keys in HKCU
+$key1 = [Microsoft.Win32.Registry]::CurrentUser.CreateSubKey("Software\Classes\Directory\shell\DummyTestDirectoryApp")
+$key1.SetValue("", "Open with Dummy Directory App")
+$cmd1 = $key1.CreateSubKey("command")
+$cmd1.SetValue("", '"C:\FakeNonExistentFolder\DummyDirApp.exe" "%1"')
+
+# 2. Run scanner to verify detection (missing executable target)
+# 3. Export .reg backup using reg.exe export
+# 4. Remove test keys using reg.exe delete
+# 5. Verify 1-click restore by importing the generated .reg file
+# 6. Clean up temporary test keys and backup files
+```
+All tests verify zero collateral damage, accurate backup generation, and complete cleanup upon exit.
+

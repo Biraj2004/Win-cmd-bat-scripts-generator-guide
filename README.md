@@ -33,8 +33,9 @@ Every script in the repository is built as part of a 1:1 platform twin pair. Win
 2. **Safety Confirmation Gate**:
    - No script will mutate disk files without explicit `Y`/`YES` confirmation.
    - Declining prompt exits cleanly without touching any files (`exit 0`).
-3. **PowerShell Base64 Payload Engine (Windows)**:
-   - Heavy batch operations pass execution to Base64 UTF-16LE Encoded PowerShell commands (`-EncodedCommand`), avoiding quote/escaping issues and supporting Unicode filenames natively.
+3. **PowerShell Execution Engines (Windows)**:
+   - **Base64 Payload Engine**: File processing scripts pass execution to Base64 UTF-16LE Encoded PowerShell commands (`-EncodedCommand`), avoiding quote/escaping issues and supporting Unicode filenames natively.
+   - **Hybrid Scriptblock Engine**: Interactive system & registry tools (e.g. `Win_Clean_Explorer_Context_Menu_Entries.bat`) use the self-contained hybrid pattern (`<# : ... #>`) allowing complex interactive multi-menu workflows without CMD command-line buffer constraints.
 4. **Tasteful Minimal Color Hierarchy & Tag Vocabulary**:
    - Banners & Main Section Titles: **Cyan/Blue**
    - Body Text, Info Labels & File Paths: Clean **White** for maximum legibility and zero visual noise
