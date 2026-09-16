@@ -263,10 +263,11 @@ Write-Host $dividerLight -ForegroundColor Gray
 # 5. Core Registration Helpers
 # -----------------------------------------------------------------------------
 function Set-RegistryValueQuiet([string]$keyPath, [string]$valueName, [object]$valueData, [Microsoft.Win32.RegistryValueKind]$kind = [Microsoft.Win32.RegistryValueKind]::String) {
-    if (-not (Test-Path -LiteralPath $keyPath)) {
-        [void](New-Item -Path $keyPath -Force)
+    if ($null -eq $valueData) {
+        $valueData = ''
     }
-    Set-ItemProperty -LiteralPath $keyPath -Name $valueName -Value $valueData -Type $kind -Force
+    $normalizedKey = $keyPath -replace '^HKCU:\\?', 'HKEY_CURRENT_USER\' -replace '^HKLM:\\?', 'HKEY_LOCAL_MACHINE\'
+    [Microsoft.Win32.Registry]::SetValue($normalizedKey, $valueName, $valueData, $kind)
 }
 
 try {
@@ -321,8 +322,8 @@ foreach ($item in $videoFormats) {
         # Check idempotency: if HKCU ProgID exists and extension default is already set
         $extKey = "HKCU:\Software\Classes\$ext"
         $progIdKey = "HKCU:\Software\Classes\$progId"
-        $currentDefault = (Get-ItemProperty -LiteralPath $extKey -Name '(default)' -ErrorAction SilentlyContinue).'(default)'
-        $openWithAssigned = (Get-ItemProperty -LiteralPath "$extKey\OpenWithProgids" -Name $progId -ErrorAction SilentlyContinue)
+        $currentDefault = (Get-ItemProperty -LiteralPath $extKey -ErrorAction SilentlyContinue).'(default)'
+        $openWithAssigned = (Get-ItemProperty -LiteralPath "$extKey\OpenWithProgids" -ErrorAction SilentlyContinue).$progId
 
         if ($currentDefault -eq $progId -and $null -ne $openWithAssigned -and (Test-Path -LiteralPath $progIdKey)) {
             Write-Host ("[SKIP]     $ext`t(already set to $progId)") -ForegroundColor DarkGray
