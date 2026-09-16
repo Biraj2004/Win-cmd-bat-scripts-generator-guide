@@ -50,6 +50,8 @@ macOS   : macOS_Rename_Files_By_Creation_Date.sh
 | `Win_Strip_Mismatched_Numbered_Prefix.bat` | `macOS_Strip_Mismatched_Numbered_Prefix.sh` | Pure numeric prefix stripping before first hyphen |
 | `Win_Fix_Double_Extensions_And_Convert_Webm_To_Mp4.bat` | `macOS_Fix_Double_Extensions_And_Convert_Webm_To_Mp4.sh` | Strips double video extensions and converts WebM to MP4 |
 | `Win_Install_FFmpeg_And_Set_Env_Path.bat` | `macOS_Install_FFmpeg_And_Set_Env_Path.sh` | FFmpeg auto-installer and environment PATH configuration |
+| `Win_Set_MPV_As_Default_Video_Player.bat` | `macOS_Set_MPV_As_Default_Video_Player.sh` | Configures and registers MPV as default player for all 81 video-only file formats |
+| `Win_Setup_Stremio_To_Play_In_MPV.bat` | `macOS_Setup_Stremio_To_Play_In_MPV.sh` | Configures Stremio to add MPV player integration ("Play in MPV") |
 | `Win_Clean_Explorer_Context_Menu_Entries.bat` | *N/A (Windows Registry Specific)* | Scans context menu registry locations (`Directory`, `Background`, `Folder`, `*` in `HKLM`/`HKCU`), detects missing executables / uninstalled app leftovers, creates `.reg` backups, and supports selective or bulk removal. |
 | `Win_Restart_Windows_Explorer.bat` | *N/A (Windows Explorer Specific)* | Gracefully terminates and relaunches `explorer.exe` to instantly refresh desktop, taskbar, and shell extensions without rebooting. |
 

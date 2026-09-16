@@ -1,0 +1,110 @@
+<svg width="1200" height="240" viewBox="0 0 1200 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Dark GitHub-Native Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d1117" />
+      <stop offset="100%" stop-color="#161b22" />
+    </linearGradient>
+
+    <!-- Accent Title Gradient -->
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="50%" stop-color="#818cf8" />
+      <stop offset="100%" stop-color="#c084fc" />
+    </linearGradient>
+
+    <!-- Terminal Background Gradient -->
+    <linearGradient id="termBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1c2128" />
+      <stop offset="100%" stop-color="#12161c" />
+    </linearGradient>
+  </defs>
+
+  <!-- Container Frame -->
+  <rect width="1200" height="240" rx="12" fill="url(#bgGrad)" />
+  <rect x="0.5" y="0.5" width="1199" height="239" rx="11.5" stroke="#30363d" stroke-width="1" fill="none" />
+
+  <!-- Left Side: Stylized Vector Twin-Terminal Window -->
+  <g transform="translate(60, 36)">
+    <!-- Terminal Outer Frame -->
+    <rect width="320" height="168" rx="8" fill="url(#termBg)" stroke="#30363d" stroke-width="1.2" />
+    
+    <!-- Titlebar Header -->
+    <rect width="320" height="28" rx="8" fill="#21262d" />
+    <rect y="20" width="320" height="8" fill="#21262d" />
+    <line x1="0" y1="28" x2="320" y2="28" stroke="#30363d" stroke-width="1" />
+
+    <!-- macOS Window Control Dots -->
+    <circle cx="16" cy="14" r="4.5" fill="#ff5f56" />
+    <circle cx="29" cy="14" r="4.5" fill="#ffbd2e" />
+    <circle cx="42" cy="14" r="4.5" fill="#27c93f" />
+
+    <!-- Terminal Window Title -->
+    <text x="160" y="18" fill="#8b949e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="10.5" font-weight="600" text-anchor="middle" letter-spacing="0.5">terminal — 1:1 twin scripts</text>
+
+    <!-- Terminal Body: Windows Line -->
+    <g transform="translate(18, 56)">
+      <!-- Windows Logo Icon -->
+      <path d="M0 2.5L5.5 1.7V6.5L0 6.5V2.5ZM6.5 1.5L14 0.5V6.5L6.5 6.5V1.5ZM0 7.5L5.5 7.5V12.3L0 11.5V7.5ZM6.5 7.5L14 7.5V13.5L6.5 12.5V7.5Z" fill="#0078d4" />
+      <text x="22" y="10" fill="#58a6ff" font-family="'Cascadia Code', 'Fira Code', 'SF Mono', Consolas, monospace" font-size="11.5" font-weight="600">CMD&gt; Win_Set_MPV_Player.bat</text>
+    </g>
+
+    <!-- Terminal Body: Execution Feedback -->
+    <g transform="translate(40, 84)">
+      <text x="0" y="0" fill="#7ee787" font-family="'Cascadia Code', 'Fira Code', 'SF Mono', Consolas, monospace" font-size="10.5">[INFO]  81 Video Formats Set</text>
+    </g>
+
+    <!-- Terminal Separator Line -->
+    <line x1="18" y1="98" x2="302" y2="98" stroke="#30363d" stroke-dasharray="3 3" stroke-width="1" />
+
+    <!-- Terminal Body: macOS Line -->
+    <g transform="translate(18, 122)">
+      <!-- Apple Logo Icon -->
+      <path d="M9.8 4.2C10.5 3.3 11 2.1 10.8 1C9.8 1 8.7 1.6 8 2.5C7.4 3.2 6.9 4.4 7 5.5C8.1 5.6 9.2 5 9.8 4.2ZM11.1 5.6C9.6 5.5 8.4 6.4 7.7 6.4C6.9 6.4 5.9 5.6 4.7 5.6C3.1 5.6 1.7 6.5 0.9 8C-0.7 10.8 0.5 15.1 2 17.3C2.8 18.4 3.6 19.6 4.8 19.5C6 19.4 6.4 18.7 7.8 18.7C9.2 18.7 9.6 19.5 10.8 19.5C12.1 19.5 12.8 18.4 13.6 17.3C14.5 16 14.8 14.7 14.9 14.6C14.8 14.5 12.5 13.6 12.5 11C12.5 8.8 14.3 7.7 14.4 7.6C13.3 6.1 11.7 5.7 11.1 5.6Z" fill="#c9d1d9" transform="scale(0.7) translate(2, 0)" />
+      <text x="22" y="10" fill="#e6edf3" font-family="'Cascadia Code', 'Fira Code', 'SF Mono', Consolas, monospace" font-size="11.5" font-weight="600">$ ./macOS_Set_MPV_Player.sh</text>
+    </g>
+
+    <!-- Terminal Body: macOS Status -->
+    <g transform="translate(40, 150)">
+      <text x="0" y="0" fill="#7ee787" font-family="'Cascadia Code', 'Fira Code', 'SF Mono', Consolas, monospace" font-size="10.5">[SUCCESS] 1:1 Parity Verified</text>
+    </g>
+  </g>
+
+  <!-- Right Side: Clean Typography & System Specification -->
+  <g transform="translate(430, 48)">
+    <!-- Top Category Label -->
+    <g transform="translate(0, 0)">
+      <!-- Accent Bullet -->
+      <circle cx="4" cy="4" r="3" fill="#38bdf8" />
+      <text x="16" y="7.5" fill="#58a6ff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="700" letter-spacing="2">CROSS-PLATFORM AUTOMATION &amp; SCRIPT GENERATOR</text>
+    </g>
+
+    <!-- Main Title -->
+    <text x="0" y="48" fill="#f0f6fc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="34" font-weight="800" letter-spacing="-0.5">Win &amp; macOS Script Suite</text>
+
+    <!-- Subtitle with Gradient Accent -->
+    <text x="0" y="80" fill="url(#accentGrad)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" font-weight="600">Automated File Management &amp; System Configuration Twins</text>
+
+    <!-- Core Value Statement -->
+    <text x="0" y="108" fill="#8b949e" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="400">
+      Built with 1:1 cross-platform behavioral parity, mandatory confirmation gates, and idempotency guarantees.
+    </text>
+
+    <!-- Bottom Metadata Specs Divider & Pills -->
+    <g transform="translate(0, 134)">
+      <!-- Spec Line -->
+      <line x1="0" y1="0" x2="680" y2="0" stroke="#30363d" stroke-width="1" />
+
+      <!-- Feature Tags -->
+      <text x="0" y="18" fill="#7d8590" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11.5" font-weight="500">
+        <tspan fill="#38bdf8" font-weight="600">Windows</tspan> .bat + PowerShell
+        <tspan fill="#484f58"> • </tspan>
+        <tspan fill="#c9d1d9" font-weight="600">macOS</tspan> .sh + Bash
+        <tspan fill="#484f58"> • </tspan>
+        <tspan fill="#a78bfa" font-weight="600">Media</tspan> MPV &amp; FFmpeg
+        <tspan fill="#484f58"> • </tspan>
+        <tspan fill="#34d399" font-weight="600">Safety</tspan> Confirmation Gates
+      </text>
+    </g>
+  </g>
+</svg>
