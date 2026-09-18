@@ -54,6 +54,7 @@ macOS   : macOS_Rename_Files_By_Creation_Date.sh
 | `Win_Setup_Stremio_To_Play_In_MPV.bat` | `macOS_Setup_Stremio_To_Play_In_MPV.sh` | Configures Stremio to add MPV player integration ("Play in MPV") |
 | `Win_Clean_Explorer_Context_Menu_Entries.bat` | *N/A (Windows Registry Specific)* | Scans context menu registry locations (`Directory`, `Background`, `Folder`, `*` in `HKLM`/`HKCU`), detects missing executables / uninstalled app leftovers, creates `.reg` backups, and supports selective or bulk removal. |
 | `Win_Restart_Windows_Explorer.bat` | *N/A (Windows Explorer Specific)* | Gracefully terminates and relaunches `explorer.exe` to instantly refresh desktop, taskbar, and shell extensions without rebooting. |
+| `Win_Toggle_WiFi_Adapters_And_Auto_Connect.bat` | *N/A (Windows Hardware Specific)* | Switches between MediaTek Wi-Fi 6 MT7921 and TP-Link USB adapters, handles independent/bulk toggling, auto-provisions profile, and connects to `BIRAJ HOME 5GHz`. |
 
 ---
 

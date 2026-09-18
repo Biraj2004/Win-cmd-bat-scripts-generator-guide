@@ -32,6 +32,7 @@ Every multi-platform script in the repository is built as part of a 1:1 twin pai
 | **FFmpeg Auto-Installer & PATH Setup** | [`Win_Install_FFmpeg_And_Set_Env_Path.bat`](./Win_Install_FFmpeg_And_Set_Env_Path.bat) | [`macOS_Install_FFmpeg_And_Set_Env_Path.sh`](./Mac-Equivalent-Scripts/macOS_Install_FFmpeg_And_Set_Env_Path.sh) | Verifies FFmpeg presence; if missing, automatically downloads the release build, installs it, and configures system environment PATH. |
 | **Explorer Context Menu Cleaner** | [`Win_Clean_Explorer_Context_Menu_Entries.bat`](./Win_Clean_Explorer_Context_Menu_Entries.bat) | *N/A (Windows Registry Specific)* | Scans context menu registry locations (`Directory`, `Background`, `Folder`, `*` in `HKLM`/`HKCU`), detects missing executables / uninstalled app leftovers, creates `.reg` backups, and supports selective or bulk removal. |
 | **Restart Windows Explorer** | [`Win_Restart_Windows_Explorer.bat`](./Win_Restart_Windows_Explorer.bat) | *N/A (Windows Explorer Specific)* | Gracefully terminates and relaunches `explorer.exe` to instantly refresh desktop, taskbar, and file explorer shell modifications without rebooting. |
+| **Wi-Fi Card Switcher & Auto-Connect** | [`Win_Toggle_WiFi_Adapters_And_Auto_Connect.bat`](./Win_Toggle_WiFi_Adapters_And_Auto_Connect.bat) | *N/A (Windows Hardware Specific)* | Controls and switches between MediaTek Wi-Fi 6 MT7921 and TP-Link Wireless USB adapters, toggles cards independently or together, provisions profiles, and auto-connects to `BIRAJ HOME 5GHz`. |
 
 ---
 
@@ -112,7 +113,8 @@ chmod +x Mac-Equivalent-Scripts/macOS_Set_MPV_As_Default_Video_Player.sh
 ├── Win_Restart_Windows_Explorer.bat
 ├── Win_Set_MPV_As_Default_Video_Player.bat
 ├── Win_Setup_Stremio_To_Play_In_MPV.bat
-└── Win_Strip_Mismatched_Numbered_Prefix.bat
+├── Win_Strip_Mismatched_Numbered_Prefix.bat
+└── Win_Toggle_WiFi_Adapters_And_Auto_Connect.bat
 ```
 
 ---
