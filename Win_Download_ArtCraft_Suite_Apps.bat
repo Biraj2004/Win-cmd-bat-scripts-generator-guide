@@ -7,9 +7,12 @@ cd /d "%~dp0"
 :: =======================================================================================================
 :: GitHub      : https://github.com/Biraj2004
 :: Developer   : Biraj
-:: Description : Automates discovery, version resolution, and downloading of the complete 14-application
-::                ArtCraft creative suite (PhotoCraft, VectorCraft, FilmCraft, ArtCraft Hub, etc.)
+:: Description : Automates discovery, catalog checking, version resolution, and downloading of the complete
+::                ArtCraft creative suite (PhotoCraft, VectorCraft, FigCraft, FilmCraft, ArtCraft Hub, etc.)
 ::                from https://getartcraft.com and https://github.com/storytold.
+::                - Includes 15 core standalone creative apps (including newly added FigCraft).
+::                - Features Live Catalog Checker: scans getartcraft.com/apps & GitHub for any newly added
+::                  Craft applications and automatically includes them in the download queue.
 ::                - Downloads latest standalone installers: Windows x64 (.msi) and macOS (.dmg).
 ::                - Automatically creates dedicated parent and subfolders at script execution location.
 ::                - Discovers true real-time latest releases dynamically without GitHub API rate limits.
@@ -58,12 +61,13 @@ Write-Host ('[INFO] Working Directory : ' + (Get-Location).Path) -ForegroundColo
 Write-Host '[INFO] Official Source   : https://getartcraft.com/apps' -ForegroundColor White
 Write-Host '[INFO] GitHub Org        : https://github.com/storytold' -ForegroundColor White
 Write-Host '[INFO] Supported Targets : Windows x64 (.msi) & macOS Universal (.dmg)' -ForegroundColor White
-Write-Host '[INFO] Apps Discovered   : 14 Standalone Creative Applications' -ForegroundColor White
+Write-Host '[INFO] Core Suite Apps   : 15 Standalone Creative Applications (Including FigCraft)' -ForegroundColor White
+Write-Host '[INFO] Auto-Discovery    : Active live checker scans for newly released apps & queues them' -ForegroundColor White
 Write-Host '[INFO] Safety & Storage  : Atomic downloads (.tmp -> final), skips up-to-date, archives older versions' -ForegroundColor White
 Write-Host ''
 
-# --- ARTCRAFT SUITE APPLICATION REGISTRY ---
-$suiteRegistry = @(
+# --- ARTCRAFT SUITE CORE APPLICATION REGISTRY ---
+$suiteRegistryList = [System.Collections.ArrayList]::new(@(
     [PSCustomObject]@{
         Id          = "artcraft"
         Name        = "ArtCraft Hub"
@@ -82,11 +86,11 @@ $suiteRegistry = @(
         Repo        = "photocraft"
         Category    = "Photo Retouching & Editing"
         Description = "Open-source photo retouching & pixel editor (Photoshop alternative)"
-        FallbackTag = "v0.7.0"
+        FallbackTag = "v0.9.0"
         MatchMsi    = '^photocraft-.*windows-x64\.msi$'
         MatchDmg    = '^photocraft-.*macos-universal\.dmg$'
-        FallbackMsi = "https://github.com/storytold/photocraft/releases/download/v0.7.0/photocraft-0.7.0-windows-x64.msi"
-        FallbackDmg = "https://github.com/storytold/photocraft/releases/download/v0.7.0/photocraft-0.7.0-macos-universal.dmg"
+        FallbackMsi = "https://github.com/storytold/photocraft/releases/download/v0.9.0/photocraft-0.9.0-windows-x64.msi"
+        FallbackDmg = "https://github.com/storytold/photocraft/releases/download/v0.9.0/photocraft-0.9.0-macos-universal.dmg"
     },
     [PSCustomObject]@{
         Id          = "vectorcraft"
@@ -94,11 +98,11 @@ $suiteRegistry = @(
         Repo        = "vectorcraft"
         Category    = "Vector Art & Illustration"
         Description = "Open-source vector graphics & illustration tool (Illustrator alternative)"
-        FallbackTag = "v0.9.0"
+        FallbackTag = "v0.11.0"
         MatchMsi    = '^vectorcraft-.*windows-x64\.msi$'
         MatchDmg    = '^vectorcraft-.*macos-universal\.dmg$'
-        FallbackMsi = "https://github.com/storytold/vectorcraft/releases/download/v0.9.0/vectorcraft-0.9.0-windows-x64.msi"
-        FallbackDmg = "https://github.com/storytold/vectorcraft/releases/download/v0.9.0/vectorcraft-0.9.0-macos-universal.dmg"
+        FallbackMsi = "https://github.com/storytold/vectorcraft/releases/download/v0.11.0/vectorcraft-0.11.0-windows-x64.msi"
+        FallbackDmg = "https://github.com/storytold/vectorcraft/releases/download/v0.11.0/vectorcraft-0.11.0-macos-universal.dmg"
     },
     [PSCustomObject]@{
         Id          = "lightcraft"
@@ -106,11 +110,11 @@ $suiteRegistry = @(
         Repo        = "lightcraft"
         Category    = "RAW & Photo Processing"
         Description = "Non-destructive RAW photo workflow & color grading (Lightroom alternative)"
-        FallbackTag = "v0.6.0"
+        FallbackTag = "v0.8.0"
         MatchMsi    = '^lightcraft-.*windows-x64\.msi$'
         MatchDmg    = '^lightcraft-.*macos-universal\.dmg$'
-        FallbackMsi = "https://github.com/storytold/lightcraft/releases/download/v0.6.0/lightcraft-0.6.0-windows-x64.msi"
-        FallbackDmg = "https://github.com/storytold/lightcraft/releases/download/v0.6.0/lightcraft-0.6.0-macos-universal.dmg"
+        FallbackMsi = "https://github.com/storytold/lightcraft/releases/download/v0.8.0/lightcraft-0.8.0-windows-x64.msi"
+        FallbackDmg = "https://github.com/storytold/lightcraft/releases/download/v0.8.0/lightcraft-0.8.0-macos-universal.dmg"
     },
     [PSCustomObject]@{
         Id          = "filmcraft"
@@ -118,11 +122,11 @@ $suiteRegistry = @(
         Repo        = "filmcraft"
         Category    = "Nonlinear Video Editing"
         Description = "Open-source nonlinear video editor & timeline cutter (Premiere alternative)"
-        FallbackTag = "v0.6.0"
+        FallbackTag = "v0.8.0"
         MatchMsi    = '^filmcraft-.*windows-x64\.msi$'
         MatchDmg    = '^filmcraft-.*macos-universal\.dmg$'
-        FallbackMsi = "https://github.com/storytold/filmcraft/releases/download/v0.6.0/filmcraft-0.6.0-windows-x64.msi"
-        FallbackDmg = "https://github.com/storytold/filmcraft/releases/download/v0.6.0/filmcraft-0.6.0-macos-universal.dmg"
+        FallbackMsi = "https://github.com/storytold/filmcraft/releases/download/v0.8.0/filmcraft-0.8.0-windows-x64.msi"
+        FallbackDmg = "https://github.com/storytold/filmcraft/releases/download/v0.8.0/filmcraft-0.8.0-macos-universal.dmg"
     },
     [PSCustomObject]@{
         Id          = "pdfcraft"
@@ -130,11 +134,11 @@ $suiteRegistry = @(
         Repo        = "pdfcraft"
         Category    = "PDF Reader & Editor"
         Description = "Open-source PDF editor, annotator & viewer (Acrobat alternative)"
-        FallbackTag = "v0.6.0"
+        FallbackTag = "v0.8.0"
         MatchMsi    = '^pdfcraft-.*windows-x64\.msi$'
         MatchDmg    = '^pdfcraft-.*macos-universal\.dmg$'
-        FallbackMsi = "https://github.com/storytold/pdfcraft/releases/download/v0.6.0/pdfcraft-0.6.0-windows-x64.msi"
-        FallbackDmg = "https://github.com/storytold/pdfcraft/releases/download/v0.6.0/pdfcraft-0.6.0-macos-universal.dmg"
+        FallbackMsi = "https://github.com/storytold/pdfcraft/releases/download/v0.8.0/pdfcraft-0.8.0-windows-x64.msi"
+        FallbackDmg = "https://github.com/storytold/pdfcraft/releases/download/v0.8.0/pdfcraft-0.8.0-macos-universal.dmg"
     },
     [PSCustomObject]@{
         Id          = "effectcraft"
@@ -142,11 +146,11 @@ $suiteRegistry = @(
         Repo        = "effectcraft"
         Category    = "Motion Graphics & VFX"
         Description = "Motion graphics, visual effects & compositing (After Effects alternative)"
-        FallbackTag = "v0.8.0"
+        FallbackTag = "v0.10.0"
         MatchMsi    = '^effectcraft-.*windows-x64\.msi$'
         MatchDmg    = '^effectcraft-.*macos-universal\.dmg$'
-        FallbackMsi = "https://github.com/storytold/effectcraft/releases/download/v0.8.0/effectcraft-0.8.0-windows-x64.msi"
-        FallbackDmg = "https://github.com/storytold/effectcraft/releases/download/v0.8.0/effectcraft-0.8.0-macos-universal.dmg"
+        FallbackMsi = "https://github.com/storytold/effectcraft/releases/download/v0.10.0/effectcraft-0.10.0-windows-x64.msi"
+        FallbackDmg = "https://github.com/storytold/effectcraft/releases/download/v0.10.0/effectcraft-0.10.0-macos-universal.dmg"
     },
     [PSCustomObject]@{
         Id          = "designcraft"
@@ -154,11 +158,23 @@ $suiteRegistry = @(
         Repo        = "designcraft"
         Category    = "Page Layout & Publishing"
         Description = "Page layout, editorial design & desktop publishing (InDesign alternative)"
-        FallbackTag = "v0.6.0"
+        FallbackTag = "v0.8.0"
         MatchMsi    = '^designcraft-.*windows-x64\.msi$'
         MatchDmg    = '^designcraft-.*macos-universal\.dmg$'
-        FallbackMsi = "https://github.com/storytold/designcraft/releases/download/v0.6.0/designcraft-0.6.0-windows-x64.msi"
-        FallbackDmg = "https://github.com/storytold/designcraft/releases/download/v0.6.0/designcraft-0.6.0-macos-universal.dmg"
+        FallbackMsi = "https://github.com/storytold/designcraft/releases/download/v0.8.0/designcraft-0.8.0-windows-x64.msi"
+        FallbackDmg = "https://github.com/storytold/designcraft/releases/download/v0.8.0/designcraft-0.8.0-macos-universal.dmg"
+    },
+    [PSCustomObject]@{
+        Id          = "figcraft"
+        Name        = "FigCraft"
+        Repo        = "figcraft"
+        Category    = "UI/UX & Interface Design"
+        Description = "Interface design, frames, auto layout, vector networks & prototypes (Figma alternative)"
+        FallbackTag = "v0.6.0"
+        MatchMsi    = '^figcraft-.*windows-x64\.msi$'
+        MatchDmg    = '^figcraft-.*macos-universal\.dmg$'
+        FallbackMsi = "https://github.com/storytold/figcraft/releases/download/v0.6.0/figcraft-0.6.0-windows-x64.msi"
+        FallbackDmg = "https://github.com/storytold/figcraft/releases/download/v0.6.0/figcraft-0.6.0-macos-universal.dmg"
     },
     [PSCustomObject]@{
         Id          = "wordcraft"
@@ -166,11 +182,11 @@ $suiteRegistry = @(
         Repo        = "wordcraft"
         Category    = "Document & Word Processing"
         Description = "Clean-room word processor & typographic document authoring (Word alternative)"
-        FallbackTag = "v0.5.0"
+        FallbackTag = "v0.7.0"
         MatchMsi    = '^wordcraft-.*windows-x64\.msi$'
         MatchDmg    = '^wordcraft-.*macos-universal\.dmg$'
-        FallbackMsi = "https://github.com/storytold/wordcraft/releases/download/v0.5.0/wordcraft-0.5.0-windows-x64.msi"
-        FallbackDmg = "https://github.com/storytold/wordcraft/releases/download/v0.5.0/wordcraft-0.5.0-macos-universal.dmg"
+        FallbackMsi = "https://github.com/storytold/wordcraft/releases/download/v0.7.0/wordcraft-0.7.0-windows-x64.msi"
+        FallbackDmg = "https://github.com/storytold/wordcraft/releases/download/v0.7.0/wordcraft-0.7.0-macos-universal.dmg"
     },
     [PSCustomObject]@{
         Id          = "gridcraft"
@@ -178,11 +194,11 @@ $suiteRegistry = @(
         Repo        = "gridcraft"
         Category    = "Spreadsheet & Modeling"
         Description = "Clean-room spreadsheet, formula calculation & data analysis (Excel alternative)"
-        FallbackTag = "v0.5.0"
+        FallbackTag = "v0.7.0"
         MatchMsi    = '^gridcraft-.*windows-x64\.msi$'
         MatchDmg    = '^gridcraft-.*macos-universal\.dmg$'
-        FallbackMsi = "https://github.com/storytold/gridcraft/releases/download/v0.5.0/gridcraft-0.5.0-windows-x64.msi"
-        FallbackDmg = "https://github.com/storytold/gridcraft/releases/download/v0.5.0/gridcraft-0.5.0-macos-universal.dmg"
+        FallbackMsi = "https://github.com/storytold/gridcraft/releases/download/v0.7.0/gridcraft-0.7.0-windows-x64.msi"
+        FallbackDmg = "https://github.com/storytold/gridcraft/releases/download/v0.7.0/gridcraft-0.7.0-macos-universal.dmg"
     },
     [PSCustomObject]@{
         Id          = "cadcraft"
@@ -190,11 +206,11 @@ $suiteRegistry = @(
         Repo        = "cadcraft"
         Category    = "2D/3D CAD & Drafting"
         Description = "Computer-aided drafting & parametric design engine (AutoCAD alternative)"
-        FallbackTag = "v0.5.0"
+        FallbackTag = "v0.7.0"
         MatchMsi    = '^cadcraft-.*windows-x64\.msi$'
         MatchDmg    = '^cadcraft-.*macos-universal\.dmg$'
-        FallbackMsi = "https://github.com/storytold/cadcraft/releases/download/v0.5.0/cadcraft-0.5.0-windows-x64.msi"
-        FallbackDmg = "https://github.com/storytold/cadcraft/releases/download/v0.5.0/cadcraft-0.5.0-macos-universal.dmg"
+        FallbackMsi = "https://github.com/storytold/cadcraft/releases/download/v0.7.0/cadcraft-0.7.0-windows-x64.msi"
+        FallbackDmg = "https://github.com/storytold/cadcraft/releases/download/v0.7.0/cadcraft-0.7.0-macos-universal.dmg"
     },
     [PSCustomObject]@{
         Id          = "deckcraft"
@@ -202,11 +218,11 @@ $suiteRegistry = @(
         Repo        = "deckcraft"
         Category    = "Presentations & Slides"
         Description = "Presentation slides, deck design & screen projection (PowerPoint alternative)"
-        FallbackTag = "v0.5.0"
+        FallbackTag = "v0.7.0"
         MatchMsi    = '^deckcraft-.*windows-x64\.msi$'
         MatchDmg    = '^deckcraft-.*macos-universal\.dmg$'
-        FallbackMsi = "https://github.com/storytold/deckcraft/releases/download/v0.5.0/deckcraft-0.5.0-windows-x64.msi"
-        FallbackDmg = "https://github.com/storytold/deckcraft/releases/download/v0.5.0/deckcraft-0.5.0-macos-universal.dmg"
+        FallbackMsi = "https://github.com/storytold/deckcraft/releases/download/v0.7.0/deckcraft-0.7.0-windows-x64.msi"
+        FallbackDmg = "https://github.com/storytold/deckcraft/releases/download/v0.7.0/deckcraft-0.7.0-macos-universal.dmg"
     },
     [PSCustomObject]@{
         Id          = "soundcraft"
@@ -214,11 +230,11 @@ $suiteRegistry = @(
         Repo        = "soundcraft"
         Category    = "Audio Editing & DAW"
         Description = "Digital audio workstation, waveform editing & mastering (Audition alternative)"
-        FallbackTag = "v0.5.0"
+        FallbackTag = "v0.7.0"
         MatchMsi    = '^soundcraft-.*windows-x64\.msi$'
         MatchDmg    = '^soundcraft-.*macos-universal\.dmg$'
-        FallbackMsi = "https://github.com/storytold/soundcraft/releases/download/v0.5.0/soundcraft-0.5.0-windows-x64.msi"
-        FallbackDmg = "https://github.com/storytold/soundcraft/releases/download/v0.5.0/soundcraft-0.5.0-macos-universal.dmg"
+        FallbackMsi = "https://github.com/storytold/soundcraft/releases/download/v0.7.0/soundcraft-0.7.0-windows-x64.msi"
+        FallbackDmg = "https://github.com/storytold/soundcraft/releases/download/v0.7.0/soundcraft-0.7.0-macos-universal.dmg"
     },
     [PSCustomObject]@{
         Id          = "craft-launcher"
@@ -226,13 +242,136 @@ $suiteRegistry = @(
         Repo        = "craft-launcher"
         Category    = "App Hub & Version Manager"
         Description = "Central app launcher & automatic version manager for Craft apps"
-        FallbackTag = "v0.2.1"
+        FallbackTag = "v0.4.1"
         MatchMsi    = '^artcraft-launcher-.*windows-x64\.msi$'
         MatchDmg    = '^artcraft-launcher-.*macos-universal\.dmg$'
-        FallbackMsi = "https://github.com/storytold/craft-launcher/releases/download/v0.2.1/artcraft-launcher-0.2.1-windows-x64.msi"
-        FallbackDmg = "https://github.com/storytold/craft-launcher/releases/download/v0.2.1/artcraft-launcher-0.2.1-macos-universal.dmg"
+        FallbackMsi = "https://github.com/storytold/craft-launcher/releases/download/v0.4.1/artcraft-launcher-0.4.1-windows-x64.msi"
+        FallbackDmg = "https://github.com/storytold/craft-launcher/releases/download/v0.4.1/artcraft-launcher-0.4.1-macos-universal.dmg"
     }
-)
+))
+
+# --- DYNAMIC APP CHECKER & DISCOVERY ENGINE ---
+function Invoke-ArtCraftCatalogChecker {
+    param([System.Collections.ArrayList]$registry)
+
+    Write-Host '[CHECKER] Scanning official catalog (getartcraft.com/apps) & GitHub for newly added apps...' -ForegroundColor Cyan
+
+    $knownMap = @{}
+    foreach ($item in $registry) {
+        $knownMap[$item.Id.ToLower()] = $true
+        $knownMap[$item.Repo.ToLower()] = $true
+    }
+
+    $discoveredSlugs = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
+
+    # Source 1: Crawl getartcraft.com/apps for app links and icon paths
+    try {
+        $rawLines = curl.exe -sL "https://getartcraft.com/apps" 2>$null
+        $appsHtml = if ($rawLines) { $rawLines -join "`n" } else { "" }
+        if (-not $appsHtml) {
+            $wc = New-Object System.Net.WebClient
+            $appsHtml = $wc.DownloadString("https://getartcraft.com/apps")
+        }
+
+        if ($appsHtml) {
+            $matches1 = [regex]::Matches($appsHtml, 'href="/apps/([a-z0-9-]+)"')
+            foreach ($m in $matches1) { [void]$discoveredSlugs.Add($m.Groups[1].Value.ToLower().Trim()) }
+
+            $matches2 = [regex]::Matches($appsHtml, '/images/apps/([a-z0-9-]+)/icon')
+            foreach ($m in $matches2) { [void]$discoveredSlugs.Add($m.Groups[1].Value.ToLower().Trim()) }
+        }
+    } catch {}
+
+    # Source 2: Crawl github.com/storytold organization repositories
+    try {
+        $orgLines = curl.exe -sL "https://github.com/storytold" 2>$null
+        $orgHtml = if ($orgLines) { $orgLines -join "`n" } else { "" }
+        if ($orgHtml) {
+            $matches3 = [regex]::Matches($orgHtml, 'href="/storytold/([a-zA-Z0-9_-]+craft[a-zA-Z0-9_-]*)"')
+            foreach ($m in $matches3) { [void]$discoveredSlugs.Add($m.Groups[1].Value.ToLower().Trim()) }
+        }
+    } catch {}
+
+    # Ignore auxiliary / non-standalone repositories
+    $blacklisted = @(
+        'craft-libs', 'craft-fonts', 'craft-common-actions', 'craft-launcher-assets',
+        'craft-contrib', 'craft-repo-status-app', 'placeholder-artcraft',
+        'artcraft-services', 'artcraftx', 'photocraft-corpus', 'indd-utils',
+        'realtime-voice-conversion', 'redirect-vocodes', 'storyteller-ml', 'voder-proxy'
+    )
+
+    $newAppsAdded = 0
+    foreach ($slug in $discoveredSlugs) {
+        if ($slug -in $blacklisted) { continue }
+        if ($knownMap.ContainsKey($slug)) { continue }
+
+        # Verify that candidate repository has active GitHub releases
+        $hasRelease = $false
+        try {
+            $headHeaders = curl.exe -sI "https://github.com/storytold/$slug/releases/latest" 2>$null
+            if ($headHeaders | Where-Object { $_ -match '^location:\s*.*/releases/tag/' }) {
+                $hasRelease = $true
+            }
+        } catch {}
+
+        if ($hasRelease) {
+            # Compute friendly title
+            $formattedName = (Get-Culture).TextInfo.ToTitleCase($slug)
+            if ($slug.EndsWith('craft')) {
+                $prefix = $slug.Substring(0, $slug.Length - 5)
+                $formattedName = (Get-Culture).TextInfo.ToTitleCase($prefix) + "Craft"
+            }
+
+            # Attempt to fetch rich description and title from getartcraft.com/apps/<slug>
+            $candDesc = "ArtCraft creative suite standalone application"
+            try {
+                $pageLines = curl.exe -sL "https://getartcraft.com/apps/$slug" 2>$null
+                $candPage = if ($pageLines) { $pageLines -join "`n" } else { "" }
+                if ($candPage -match '<meta\s+name="description"\s+content="([^"]+)"') {
+                    $candDesc = $matches[1].Trim()
+                }
+                if ($candPage -match '<title>(.*?)</title>') {
+                    $rawTitle = ($matches[1] -split '[:—\-]')[0].Trim()
+                    if ($rawTitle) { $formattedName = $rawTitle }
+                }
+            } catch {}
+
+            $dynamicApp = [PSCustomObject]@{
+                Id          = $slug
+                Name        = $formattedName
+                Repo        = $slug
+                Category    = "Creative App (Dynamically Discovered)"
+                Description = $candDesc
+                FallbackTag = $null
+                MatchMsi    = "^($slug-.*windows-x64\.msi|$slug-.*x64.*\.msi|$slug.*\.msi)$"
+                MatchDmg    = "^($slug-.*macos-universal\.dmg|$slug-.*\.dmg)$"
+                FallbackMsi = $null
+                FallbackDmg = $null
+                IsDynamic   = $true
+            }
+
+            [void]$registry.Add($dynamicApp)
+            $knownMap[$slug] = $true
+            $newAppsAdded++
+
+            Write-Host ("  [NEW APP DETECTED] Discovered: $formattedName ($slug)") -ForegroundColor Green
+            Write-Host ("                     Category  : Creative App (Dynamically Discovered)") -ForegroundColor Gray
+            Write-Host ("                     Desc      : $candDesc") -ForegroundColor Gray
+            Write-Host ("                     Status    : Added to download and version queue!") -ForegroundColor Green
+        }
+    }
+
+    if ($newAppsAdded -gt 0) {
+        Write-Host ("[CHECKER] Success: $newAppsAdded newly published app(s) discovered and queued!") -ForegroundColor Green
+    } else {
+        Write-Host ("[CHECKER] Verified: All $($registry.Count) ArtCraft Suite applications are in registry and up to date.") -ForegroundColor Green
+    }
+    Write-Host ''
+}
+
+# Run discovery checker before user menu
+Invoke-ArtCraftCatalogChecker -registry $suiteRegistryList
+$suiteRegistry = $suiteRegistryList.ToArray()
 
 # --- DYNAMIC RELEASE RESOLUTION ENGINE ---
 function Resolve-AppLatestRelease {
@@ -266,16 +405,18 @@ function Resolve-AppLatestRelease {
     }
 
     # Method 3: Fallback verification if network blocked scraping
-    if (-not $resolvedTag) {
+    if (-not $resolvedTag -and $app.FallbackTag) {
         $resolvedTag = $app.FallbackTag
     }
-    if (-not $msiUrl) {
+    if (-not $msiUrl -and $app.FallbackMsi) {
         $msiUrl = $app.FallbackMsi
     }
-    if (-not $dmgUrl) {
+    if (-not $dmgUrl -and $app.FallbackDmg) {
         $dmgUrl = $app.FallbackDmg
     }
 
+    $tagDisplay = if ($resolvedTag) { $resolvedTag } else { "Unresolved" }
+    $verDisplay = if ($resolvedTag) { ($resolvedTag -replace '^[a-zA-Z_-]*v', '') } else { "N/A" }
     $msiFileName = if ($msiUrl) { [System.IO.Path]::GetFileName($msiUrl) } else { "N/A" }
     $dmgFileName = if ($dmgUrl) { [System.IO.Path]::GetFileName($dmgUrl) } else { "N/A" }
 
@@ -283,14 +424,15 @@ function Resolve-AppLatestRelease {
         Id          = $app.Id
         Name        = $app.Name
         Category    = $app.Category
-        Tag         = $resolvedTag
-        Version     = ($resolvedTag -replace '^[a-zA-Z_-]*v', '')
+        Tag         = $tagDisplay
+        Version     = $verDisplay
         MsiUrl      = $msiUrl
         MsiFileName = $msiFileName
         DmgUrl      = $dmgUrl
         DmgFileName = $dmgFileName
         MatchMsi    = $app.MatchMsi
         MatchDmg    = $app.MatchDmg
+        IsDynamic   = ($app.IsDynamic -eq $true)
     }
 }
 
@@ -330,7 +472,7 @@ Write-Host ('[PLAN] Target Parent Folder : ' + $parentFolder) -ForegroundColor W
 if ($downloadWindows) { Write-Host ('[PLAN] Windows Subfolder    : ' + $windowsFolder) -ForegroundColor White }
 if ($downloadMac)     { Write-Host ('[PLAN] macOS Subfolder      : ' + $macosFolder) -ForegroundColor White }
 Write-Host ('[PLAN] Download Scope       : ' + $scopeDesc) -ForegroundColor White
-Write-Host '[PLAN] Total Applications   : 14 Standalone Creative Tools' -ForegroundColor White
+Write-Host ('[PLAN] Total Applications   : ' + $suiteRegistry.Count + ' Standalone Creative Tools') -ForegroundColor White
 Write-Host '=======================================================================================================' -ForegroundColor Cyan
 Write-Host ''
 
@@ -365,30 +507,35 @@ if ($downloadMac -and (-not [System.IO.Directory]::Exists($macosFolder))) {
 Write-Host ''
 
 # --- RESOLVING LATEST RELEASES ONLINE ---
-Write-Header 'DISCOVERING LATEST VERSIONS ACROSS ALL 14 ARTCRAFT APPS'
+Write-Header ("DISCOVERING LATEST VERSIONS ACROSS ALL " + $suiteRegistry.Count + " ARTCRAFT APPS")
 Write-Host '[PROCESSING] Querying upstream GitHub releases in real time...' -ForegroundColor White
 Write-Host ''
 
 $resolvedApps = @()
 $counter = 1
+$totalCount = $suiteRegistry.Count
 foreach ($appDef in $suiteRegistry) {
-    Write-Host ("`r[QUERYING] Resolving app " + $counter + " of 14: " + $appDef.Name + "... ") -NoNewline -ForegroundColor Cyan
+    Write-Host ("`r[QUERYING] Resolving app " + $counter + " of " + $totalCount + ": " + $appDef.Name + "... ") -NoNewline -ForegroundColor Cyan
     $res = Resolve-AppLatestRelease -app $appDef
     $resolvedApps += $res
     $counter++
 }
-Write-Host "`r[SUCCESS] Discovered latest versions and installer URLs for all 14 applications!     " -ForegroundColor Green
+Write-Host ("`r[SUCCESS] Discovered latest versions and installer URLs for all " + $totalCount + " applications!     ") -ForegroundColor Green
 Write-Host ''
 
 # Display App Inventory Table
-Write-Host ('{0,-3} | {1,-18} | {2,-16} | {3,-36} | {4,-36}' -f '#', 'App Name', 'Latest Tag', 'Windows x64 MSI Asset', 'macOS DMG Asset') -ForegroundColor Cyan
+Write-Host ('{0,-3} | {1,-20} | {2,-16} | {3,-40} | {4,-40}' -f '#', 'App Name', 'Latest Tag', 'Windows x64 MSI Asset', 'macOS DMG Asset') -ForegroundColor Cyan
 Write-Divider
 $num = 1
 foreach ($r in $resolvedApps) {
-    Write-Host ('{0,-3} | {1,-18} | {2,-16} | {3,-36} | {4,-36}' -f $num, $r.Name, $r.Tag, $r.MsiFileName, $r.DmgFileName) -ForegroundColor White
+    $displayName = if ($r.IsDynamic) { $r.Name + " *" } else { $r.Name }
+    Write-Host ('{0,-3} | {1,-20} | {2,-16} | {3,-40} | {4,-40}' -f $num, $displayName, $r.Tag, $r.MsiFileName, $r.DmgFileName) -ForegroundColor White
     $num++
 }
 Write-Divider
+if ($resolvedApps | Where-Object { $_.IsDynamic }) {
+    Write-Host '  * Indicates dynamically discovered application from live catalog checker' -ForegroundColor Gray
+}
 Write-Host ''
 
 # --- DOWNLOAD & ARCHIVING ENGINE ---
@@ -517,7 +664,7 @@ $currIdx = 1
 foreach ($app in $resolvedApps) {
     Write-Host ''
     Write-Header ("[$currIdx / $totalApps] " + $app.Name.ToUpper() + " (" + $app.Tag + ") - " + $app.Category)
-    
+
     # Process Windows MSI
     if ($downloadWindows) {
         $downloadStats.TotalAttempted++
@@ -594,12 +741,12 @@ ALREADY UP TO DATE   : $($downloadStats.UpToDate)
 DOWNLOAD FAILURES    : $($downloadStats.Failed)
 
 -------------------------------------------------------------------------------------------------------
-PLATFORM          | APP NAME            | VERSION TAG     | INSTALLER FILENAME                     | STATUS
+PLATFORM          | APP NAME             | VERSION TAG     | INSTALLER FILENAME                         | STATUS
 -------------------------------------------------------------------------------------------------------
 "@
 
 foreach ($row in $manifestRows) {
-    $manifestContent += "`r`n" + ('{0,-17} | {1,-19} | {2,-15} | {3,-38} | {4}' -f $row.Platform, $row.App, $row.Tag, $row.File, $row.Status)
+    $manifestContent += "`r`n" + ('{0,-17} | {1,-20} | {2,-15} | {3,-42} | {4}' -f $row.Platform, $row.App, $row.Tag, $row.File, $row.Status)
 }
 
 $manifestContent += @"
